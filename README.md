@@ -1,7 +1,7 @@
 # hotel-research
 
 ## inicio
-![image](https://user-images.githubusercontent.com/10261236/124379502-1407a480-dc7d-11eb-94d7-4dee25cac9d3.png)
+![image](https://user-images.githubusercontent.com/10261236/124400011-07b73200-dce5-11eb-855a-dc5597010196.png)
 
 ## Escenario 1 
 ![image](https://user-images.githubusercontent.com/10261236/124379378-3baa3d00-dc7c-11eb-98b9-f830b755dcc8.png)
