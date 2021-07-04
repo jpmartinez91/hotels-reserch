@@ -1,25 +1,27 @@
 <template>
-  <div class="detail-container">
-    <div>
+  <section class="detail-container">
+    <details open>
+    <summary>
       Costumer Type: {{ getCostumerTypeName(rate.customerType) }}
-    </div>
+    </summary>
     <div class="detail-rate">
-      <div>
+      <strong>
         Weekdays: &nbsp;
-      </div>
-      <div>
+      </strong>
+      <em>
         {{ rate.weekDay | currencyUSD }}
-      </div>
+      </em>
     </div>
     <div class="detail-rate">
-      <div>
+      <strong>
         Weekend: &nbsp;
-      </div>
-      <div>
+      </strong>
+      <em>
         {{ rate.weekend | currencyUSD }}
-      </div>
+      </em>
     </div>
-  </div>
+    </details>
+  </section>
 </template>
 
 <script>

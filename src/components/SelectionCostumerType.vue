@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <select
       v-model="selected"
       @change="onSelect()"
@@ -12,7 +12,7 @@
         {{ item.name }}
       </option>
     </select>
-  </div>
+  </section>
 </template>
 <script>
 import { CostumerType } from '@/data/data';

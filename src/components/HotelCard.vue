@@ -1,8 +1,8 @@
 <template>
-  <div
+  <section
     :class="{'candidate-hotel' : isCandidate}"
     class="card">
-    <div
+    <header
       :class="{'card-header-candidate-hotel' : isCandidate}"
       class="card-header">
       {{ hotel.name }}
@@ -11,18 +11,21 @@
           :title="hotel.rating"
           class="rating-label-ok-mark"
         />
-        {{ hotel.rating }}</div>
-    </div>
-    <div class="card-main">
-      <div class="main-description">{{ hotel.country }}</div>
-      <div class="main-description">{{ hotel.city }}</div>
+        <strong>
+          {{ hotel.rating }}
+        </strong>
+      </div>
+    </header>
+    <main class="card-main">
+      <label class="main-description">{{ hotel.country }}</label>
+      <label class="main-description">{{ hotel.city }}</label>
       <div
         v-for="(rate, i) in hotel.rates"
         :key="i">
         <detail-rates :rate="rate" />
       </div>
-    </div>
-</div></template>
+    </main>
+</section></template>
 
 <script>
 import DetailRates from '@/components/DetailRates.vue';

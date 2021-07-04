@@ -2,7 +2,7 @@ import { Hotels } from '@/data/data';
 
 /**
  *
- * @param data Object { numberTimes: Number, dataArray: Array }
+ * @param data {Object} { numberTimes: Number, dataArray: Array of Dates}
  * @returns {{newDateComponents: *, newDatesEntered: *[]}}
  */
 export default function addIncrement(data) {
@@ -14,101 +14,71 @@ export default function addIncrement(data) {
     id: newNumberOfTimes,
     value: '',
   });
-  return ({
-    newNumberOfTimes,
-    newDateValues,
+  return ({ newNumberOfTimes, newDateValues });
+}
+
+function getCostumerOptions(data) {
+  return Hotels.map((e) => {
+    const rates = e.rates.filter((rate) => rate.customerType === data)[0];
+    return {
+      id: e.id,
+      rating: e.rating,
+      weekday: rates.weekDay,
+      weekend: rates.weekend,
+    };
   });
 }
 
+/**
+ *
+ * @param data {Object} => { costumerType: Number , datesEntered: Array od Dates}
+ * @returns {number}
+ */
 export function getCandidate(data) {
   const { costumerType } = data;
   const { datesEntered } = data;
-  if (costumerType) {
-    let isWeekDay = false;
-    let isWeekend = false;
-    const validDates = datesEntered.filter((date) => date.value !== '' && date.value !== null);
-    if (validDates.length > 0) {
-      validDates.forEach((item) => {
-        const numberOfDay = new Date(Date.parse(item.value)).getDay();
-        if (numberOfDay <= 4) {
-          isWeekDay = true;
-        } else {
-          isWeekend = true;
-        }
-      });
-    }
-    let hotelSelected = 0;
-    let hotelRaiting = 0;
-    let lowest = Number.POSITIVE_INFINITY;
-    if (isWeekDay && !isWeekend) {
-      Hotels.forEach((hotel) => {
-        hotel.rates.forEach((rate) => {
-          if (rate.customerType === costumerType) {
-            if (lowest === rate.weekDay) {
-              if (hotelRaiting < hotel.rating) {
-                hotelRaiting = hotel.rating;
-                hotelSelected = hotel.id;
-              }
-            }
-            if (lowest > rate.weekDay) {
-              hotelRaiting = hotel.rating;
-              lowest = rate.weekDay;
-              hotelSelected = hotel.id;
-            }
-          }
-        });
-      });
-    }
-    if (isWeekend && !isWeekDay) {
-      Hotels.forEach((hotel) => {
-        hotel.rates.forEach((rate) => {
-          if (rate.customerType === costumerType) {
-            if (lowest === rate.weekend) {
-              if (hotelRaiting < hotel.rating) {
-                hotelRaiting = hotel.rating;
-                hotelSelected = hotel.id;
-              }
-            }
-            if (lowest > rate.weekend) {
-              hotelRaiting = hotel.rating;
-              lowest = rate.weekend;
-              hotelSelected = hotel.id;
-            }
-            if (lowest > rate.weekDay) {
-              hotelRaiting = hotel.rating;
-              lowest = rate.weekDay;
-              hotelSelected = hotel.id;
-            }
-          }
-        });
-      });
-    }
-    if (isWeekend && isWeekDay) {
-      Hotels.forEach((hotel) => {
-        hotel.rates.forEach((rate) => {
-          if (rate.customerType === costumerType) {
-            if (lowest === rate.weekend || lowest === rate.weekDay) {
-              if (hotelRaiting < hotel.rating) {
-                hotelRaiting = hotel.rating;
-                hotelSelected = hotel.id;
-              }
-            }
-            if (lowest === rate.weekend) {
-              if (hotelRaiting < hotel.rating) {
-                hotelRaiting = hotel.rating;
-                hotelSelected = hotel.id;
-              }
-            }
-            if (lowest > rate.weekend) {
-              hotelRaiting = hotel.rating;
-              lowest = rate.weekend;
-              hotelSelected = hotel.id;
-            }
-          }
-        });
-      });
-    }
-    return hotelSelected;
+  if (!costumerType) {
+    return 0;
   }
-  return 0;
+  let isWeekDay = false;
+  let isWeekend = false;
+  const validDates = datesEntered.filter((date) => date.value !== '' && date.value !== null);
+  if (!validDates.length) {
+    return 0;
+  }
+  validDates.forEach((item) => {
+    const numberOfDay = new Date(item.value).getDay();
+    if (numberOfDay <= 4) {
+      isWeekDay = true;
+    } else {
+      isWeekend = true;
+    }
+  });
+
+  let hotelSelected = 0;
+  let hotelRating = 0;
+  let lowest = Number.POSITIVE_INFINITY;
+  const options = getCostumerOptions(costumerType);
+
+  options.forEach((hotel) => {
+    const typeDays = [];
+    if (isWeekDay) {
+      typeDays.push('weekday');
+    }
+    if (isWeekend) {
+      typeDays.push('weekend');
+    }
+    typeDays.forEach((type) => {
+      if (lowest === hotel[type] && hotelRating < hotel.rating) {
+        hotelRating = hotel.rating;
+        hotelSelected = hotel.id;
+      }
+      if (lowest > hotel[type]) {
+        hotelRating = hotel.rating;
+        lowest = hotel[type];
+        hotelSelected = hotel.id;
+      }
+    });
+  });
+  return hotelSelected;
 }

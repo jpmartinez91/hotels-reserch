@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="selection-area">
+  <main>
+    <section class="selection-area">
       <selection-costumer-type
         @callback-selection="componentCallback"/>
       <div>
@@ -11,16 +11,16 @@
           @callback-date="componentCallback"/>
         <button @click="addComponent">Add new date</button>
       </div>
-      </div>
-    <div class="card-section">
+      </section>
+    <section class="card-section">
       <hotel-card
         v-for="hotel in hotels"
         :key="hotel.id"
         :hotel="hotel"
         :hotel-candidate="hotelCandidate"
       />
-    </div>
-  </div>
+    </section>
+  </main>
 </template>
 
 <script>
