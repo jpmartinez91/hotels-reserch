@@ -27,7 +27,7 @@
 import SelectionDate from '@/components/SelectionDate.vue';
 import HotelCard from '@/components/HotelCard.vue';
 import SelectionCostumerType from '@/components/SelectionCostumerType.vue';
-import addIncrement from '@/components/functions';
+import addIncrement, { getCandidate } from '@/components/functions';
 import { Hotels } from '@/data/data';
 
 export default {
@@ -37,7 +37,7 @@ export default {
     return {
       dateComponents: 1,
       hotels: Hotels,
-      hotelCandidate: null,
+      hotelCandidate: -1,
       datesEntered: [
         {
           id: 1,
@@ -81,93 +81,10 @@ export default {
           break;
         default: break;
       }
-      if (this.costumerType) {
-        let isWeekDay = false;
-        let isWeekend = false;
-        const validDates = this.datesEntered.filter((date) => date.value !== '' && date.value !== null);
-        if (validDates.length > 0) {
-          validDates.forEach((item) => {
-            const numberOfDay = new Date(item.value).getDay();
-            if (numberOfDay <= 4) {
-              isWeekDay = true;
-            } else {
-              isWeekend = true;
-            }
-          });
-        }
-        let hotelSelected = 0;
-        let hotelRaiting = 0;
-        let lowest = Number.POSITIVE_INFINITY;
-        if (isWeekDay && !isWeekend) {
-          Hotels.forEach((hotel) => {
-            hotel.rates.forEach((rate) => {
-              if (rate.customerType === this.costumerType) {
-                if (lowest === rate.weekDay) {
-                  if (hotelRaiting < hotel.rating) {
-                    hotelRaiting = hotel.rating;
-                    hotelSelected = hotel.id;
-                  }
-                }
-                if (lowest > rate.weekDay) {
-                  hotelRaiting = hotel.rating;
-                  lowest = rate.weekDay;
-                  hotelSelected = hotel.id;
-                }
-              }
-            });
-          });
-        }
-        if (isWeekend && !isWeekDay) {
-          Hotels.forEach((hotel) => {
-            hotel.rates.forEach((rate) => {
-              if (rate.customerType === this.costumerType) {
-                if (lowest === rate.weekend) {
-                  if (hotelRaiting < hotel.rating) {
-                    hotelRaiting = hotel.rating;
-                    hotelSelected = hotel.id;
-                  }
-                }
-                if (lowest > rate.weekend) {
-                  hotelRaiting = hotel.rating;
-                  lowest = rate.weekend;
-                  hotelSelected = hotel.id;
-                }
-                if (lowest > rate.weekDay) {
-                  hotelRaiting = hotel.rating;
-                  lowest = rate.weekDay;
-                  hotelSelected = hotel.id;
-                }
-              }
-            });
-          });
-        }
-        if (isWeekend && isWeekDay) {
-          Hotels.forEach((hotel) => {
-            hotel.rates.forEach((rate) => {
-              if (rate.customerType === this.costumerType) {
-                if (lowest === rate.weekend || lowest === rate.weekDay) {
-                  if (hotelRaiting < hotel.rating) {
-                    hotelRaiting = hotel.rating;
-                    hotelSelected = hotel.id;
-                  }
-                }
-                if (lowest === rate.weekend) {
-                  if (hotelRaiting < hotel.rating) {
-                    hotelRaiting = hotel.rating;
-                    hotelSelected = hotel.id;
-                  }
-                }
-                if (lowest > rate.weekend) {
-                  hotelRaiting = hotel.rating;
-                  lowest = rate.weekend;
-                  hotelSelected = hotel.id;
-                }
-              }
-            });
-          });
-        }
-        this.hotelCandidate = hotelSelected;
-      }
+      this.hotelCandidate = getCandidate({
+        costumerType: this.costumerType,
+        datesEntered: this.datesEntered,
+      });
     },
   },
 };

@@ -9,9 +9,9 @@ describe('SelectionDate', () => {
       },
     });
     const input = wrapper.find('input[type="date"]');
-    input.element.value = '0330/019';
-    input.setValue('0330/019');
+    input.element.value = '2009-03-26';
+    input.setValue('2009-03-26');
     await input.trigger('input');
-    expect(wrapper.vm.date).toBe('03/30/2019');
+    expect(wrapper.vm.date).not.toBe('03/30/2019');
   });
 });

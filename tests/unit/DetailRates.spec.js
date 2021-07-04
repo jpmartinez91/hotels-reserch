@@ -33,13 +33,13 @@ describe('Rate Details', () => {
     expect(uno).toBe(('regular').toUpperCase());
   });
 
-  it('Costumer Type shouldn\'t be regular', async () => {
+  it('Costumer Type shouldn\'t be rewards', async () => {
     const wrapper = mount(App, {
       propsData: {
         rate: Hotels[0].rates[0],
       },
     });
-    const uno = wrapper.vm.getCostumerTypeName(1);
+    const uno = wrapper.vm.getCostumerTypeName(2);
     expect(uno).toBe(('rewards').toUpperCase());
   });
 
