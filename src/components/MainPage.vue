@@ -1,12 +1,16 @@
 <template>
   <div>
     <div class="selection-area">
+      <selection-costumer-type
+        @callback-selection="componentCallback"/>
+      <div>
         <selection-date
           v-for="component in datesEntered"
           :key="component.id"
           :id-element="component.id"
           @callback-date="componentCallback"/>
         <button @click="addComponent">Add new date</button>
+      </div>
       </div>
     <div class="card-section">
       <hotel-card
@@ -22,12 +26,13 @@
 <script>
 import SelectionDate from '@/components/SelectionDate.vue';
 import HotelCard from '@/components/HotelCard.vue';
+import SelectionCostumerType from '@/components/SelectionCostumerType.vue';
 import addIncrement from '@/components/functions';
 import { Hotels } from '@/data/data';
 
 export default {
   name: 'MainPage',
-  components: { SelectionDate, HotelCard },
+  components: { SelectionDate, HotelCard, SelectionCostumerType },
   data() {
     return {
       dateComponents: 1,
