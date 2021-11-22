@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="height: 100%" >
+  <div id="app" style="zoom: 100%" >
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
