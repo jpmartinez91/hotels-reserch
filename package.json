@@ -9,6 +9,7 @@
     "test": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^3.3.0",
     "@vue/server-test-utils": "^1.2.1",
     "@vue/test-utils": "^1.2.1",
     "core-js": "^3.6.5",
